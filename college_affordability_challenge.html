@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>College Affordability Challenge</title>
+<style>
+:root{--navy:#17324f;--blue:#245b83;--pale:#eef4f8;--ink:#203040;--muted:#5d6b78;--line:#d8e1e8;--green:#176b4b;--red:#a43b3b;--gold:#8a6417}
+*{box-sizing:border-box}
+body{margin:0;background:#f4f7f9;color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{background:linear-gradient(135deg,#17324f,#285f83);color:white;padding:34px 20px}
+.wrap{max-width:920px;margin:0 auto}
+.eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:.75rem;font-weight:700;opacity:.85}
+h1{font-size:clamp(2rem,5vw,3rem);line-height:1.08;margin:.35rem 0 .7rem}
+header p{max-width:680px;margin:0;color:#e6eef4}
+main{padding:24px 16px 50px}
+.card{background:white;border:1px solid var(--line);border-radius:16px;padding:22px;margin:0 0 18px;box-shadow:0 3px 14px rgba(25,50,75,.045)}
+h2{font-size:1.3rem;margin:0 0 5px;color:var(--navy)}
+h3{font-size:1rem;margin:18px 0 8px;color:var(--blue)}
+.intro{color:var(--muted);margin:0 0 16px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.field{display:flex;flex-direction:column;gap:5px}
+label{font-weight:650;font-size:.91rem}
+input,select,textarea{width:100%;border:1px solid #bdcbd6;border-radius:9px;padding:11px 12px;font:inherit;color:var(--ink);background:white}
+input:focus,select:focus,textarea:focus{outline:3px solid #c8e0f2;border-color:var(--blue)}
+small,.hint{color:var(--muted);font-size:.83rem}
+.full{grid-column:1/-1}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button{border:0;border-radius:10px;padding:12px 17px;font:700 .95rem system-ui;cursor:pointer}
+.primary{background:var(--navy);color:white}
+.secondary{background:var(--pale);color:var(--navy);border:1px solid var(--line)}
+button:hover{filter:brightness(.96)}
+.progress{display:flex;gap:7px;margin:14px 0 0}
+.progress span{height:6px;background:#dce6ed;border-radius:9px;flex:1}
+.progress span.on{background:#7fc2a5}
+.notice{background:#fff8e8;border-left:4px solid #d4a63b;padding:12px 14px;border-radius:7px;color:#594719;font-size:.9rem}
+.results{display:none}
+.results.show{display:block}
+.metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}
+.metric{background:var(--pale);padding:14px;border-radius:12px}
+.metric .k{font-size:.77rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700}
+.metric .v{font-size:clamp(1.25rem,3vw,1.8rem);font-weight:800;color:var(--navy);overflow-wrap:anywhere}
+.metric.gap .v{color:var(--red)}
+.metric.good .v{color:var(--green)}
+table{width:100%;border-collapse:collapse;margin:10px 0}
+td{padding:9px 4px;border-bottom:1px solid var(--line)}
+td:last-child{text-align:right;font-weight:650;font-variant-numeric:tabular-nums}
+.total td{font-weight:800;border-top:2px solid var(--navy)}
+.choice{display:flex;gap:10px;align-items:flex-start;margin:9px 0;font-weight:500}
+.choice input{width:auto;margin-top:5px}
+footer{text-align:center;color:var(--muted);font-size:.82rem;padding:8px 16px 30px}
+@media(max-width:640px){.grid,.metrics{grid-template-columns:1fr}.card{padding:17px}.full{grid-column:auto}}
+@media print{body{background:white}.no-print,header .eyebrow{display:none!important}header{background:white;color:#17324f;padding:10px 0}header p{color:#333}.card{box-shadow:none;break-inside:avoid;border-color:#bbb}.results{display:block!important}main{padding:8px 0}.wrap{max-width:none}}
+</style>
+</head>
+<body>
+<header>
+ <div class="wrap">
+  <div class="eyebrow">Independent student activity · Financial literacy</div>
+  <h1>College Affordability Challenge</h1>
+  <p>Choose a real university, investigate its published costs, research the local cost of living, and build a plan to see whether you can afford one year of college.</p>
+  <div class="progress no-print" aria-label="Four missions"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span></div>
+ </div>
+</header>
+<main class="wrap">
+ <section class="card">
+  <h2>Mission 1 — Choose your university</h2>
+  <p class="intro">Use a real institution. Start with its official Cost of Attendance page and, if available, its Net Price Calculator.</p>
+  <div class="grid">
+   <div class="field"><label for="school">University / college</label><input id="school" placeholder="e.g. University of Alabama"></div>
+   <div class="field"><label for="location">City, state / country</label><input id="location" placeholder="e.g. Tuscaloosa, Alabama, USA"></div>
+   <div class="field full"><label for="coaSource">Official Cost of Attendance / Net Price Calculator URL</label><input id="coaSource" type="url" placeholder="https://..." inputmode="url"></div>
+  </div>
+ </section>
+
+ <section class="card">
+  <h2>Mission 2 — Research annual expenses</h2>
+  <p class="intro">Enter amounts for one academic year. Use the university's published figures where possible. For local rent and food, find a credible source for the university's area.</p>
+  <h3>University and study expenses</h3>
+  <div class="grid">
+   <div class="field"><label for="tuition">Tuition (annual, USD)</label><input id="tuition" type="number" min="0" step="1" placeholder="Enter amount"></div>
+   <div class="field"><label for="fees">Mandatory fees (annual, USD)</label><input id="fees" type="number" min="0" step="1" placeholder="Enter amount"></div>
+   <div class="field"><label for="books">Books and supplies (annual, USD)</label><input id="books" type="number" min="0" step="1" placeholder="Enter amount"></div>
+  </div>
+  <h3>Local cost of living</h3>
+  <div class="grid">
+   <div class="field"><label for="rent">Housing / rent per month (USD)</label><input id="rent" type="number" min="0" step="1" placeholder="Enter amount"></div>
+   <div class="field"><label for="food">Food / groceries per month (USD)</label><input id="food" type="number" min="0" step="1" placeholder="Enter amount"></div>
+   <div class="field"><label for="months">Months living in the area</label><select id="months"><option value="9">9 months</option><option value="10">10 months</option><option value="12">12 months</option></select></div>
+   <div class="field"><label for="transport">Transportation (annual, USD)</label><input id="transport" type="number" min="0" step="1" placeholder="Enter amount"></div>
+   <div class="field"><label for="personal">Personal / other costs (annual, USD)</label><input id="personal" type="number" min="0" step="1" placeholder="Enter amount"></div>
+   <div class="field"><label for="livingSource">Source for local housing and food costs</label><input id="livingSource" type="url" placeholder="https://..." inputmode="url"></div>
+  </div>
+  <p class="hint">Research tip: local government or university housing information, reputable rental-market reports, and regional cost-of-living data are useful starting points. Record the source and date you accessed it.</p>
+  <div class="notice">Avoid double-counting. Many universities' Cost of Attendance estimates already include housing, meals, books, transportation, and personal expenses. Check what is included before adding local estimates. If you use your own local rent and food research, replace the comparable university estimates rather than adding both.</div>
+ </section>
+
+ <section class="card">
+  <h2>Mission 3 — Identify your financial resources</h2>
+  <p class="intro">Estimate what you could actually use to pay for the year. Enter grants and scholarships separately from loans.</p>
+  <div class="grid">
+   <div class="field"><label for="grants">Grants (need-based aid, USD)</label><input id="grants" type="number" min="0" step="1" placeholder="Enter amount"></div>
+   <div class="field"><label for="scholarships">Scholarships (USD)</label><input id="scholarships" type="number" min="0" step="1" placeholder="Enter amount"></div>
+   <div class="field"><label for="family">Family contribution (USD)</label><input id="family" type="number" min="0" step="1" placeholder="Enter amount"></div>
+   <div class="field"><label for="savings">Your savings (USD)</label><input id="savings" type="number" min="0" step="1" placeholder="Enter amount"></div>
+   <div class="field"><label for="work">Expected work earnings available for college (USD)</label><input id="work" type="number" min="0" step="1" placeholder="Enter amount"></div>
+   <div class="field"><label for="years">Length of degree</label><select id="years"><option value="2">2 years</option><option value="3">3 years</option><option value="4" selected>4 years</option><option value="5">5 years</option><option value="6">6 years</option></select></div>
+  </div>
+  <p class="hint">Use realistic estimates. Work earnings should be the amount remaining for college costs after taxes and personal spending—not simply total wages earned.</p>
+ </section>
+
+ <section class="card">
+  <h2>Mission 4 — Run the affordability test</h2>
+  <p class="intro">Calculate the annual funding gap, then decide what you would do. The estimate assumes the same costs and resources each year, so actual future costs may differ.</p>
+  <div class="actions no-print">
+   <button class="primary" id="calculate">Calculate my results</button>
+   <button class="secondary" id="reset" type="button">Clear all entries</button>
+  </div>
+  <div class="results" id="results" aria-live="polite">
+   <div class="metrics">
+    <div class="metric"><div class="k">Annual estimated cost</div><div class="v" id="outCost">$0</div></div>
+    <div class="metric"><div class="k">Available resources</div><div class="v" id="outResources">$0</div></div>
+    <div class="metric gap" id="gapMetric"><div class="k">Annual funding gap</div><div class="v" id="outGap">$0</div></div>
+   </div>
+   <table aria-label="Annual budget breakdown">
+    <tbody>
+     <tr><td>Tuition</td><td id="rTuition">$0</td></tr>
+     <tr><td>Fees</td><td id="rFees">$0</td></tr>
+     <tr><td>Books and supplies</td><td id="rBooks">$0</td></tr>
+     <tr><td>Housing for selected months</td><td id="rHousing">$0</td></tr>
+     <tr><td>Food for selected months</td><td id="rFood">$0</td></tr>
+     <tr><td>Transportation</td><td id="rTransport">$0</td></tr>
+     <tr><td>Personal / other</td><td id="rPersonal">$0</td></tr>
+     <tr class="total"><td>Total estimated annual cost</td><td id="rTotal">$0</td></tr>
+    </tbody>
+   </table>
+   <div class="metric"><div class="k">Estimated degree-wide gap</div><div class="v" id="outDegreeGap">$0</div><p class="hint">Simple estimate using the same annual gap for every year. It is not a loan offer or a prediction of actual borrowing.</p></div>
+   <div class="notice" style="margin-top:14px">A funding gap is not automatically a loan amount. First investigate additional scholarships, lower-cost housing, work options, payment plans, and less expensive institutions. If borrowing is considered, research eligibility, interest, fees, repayment terms, and total repayment cost with a trusted adult or financial-aid professional.</div>
+   <h3>Make your final decision</h3>
+   <label class="choice"><input type="radio" name="decision" value="I can cover the estimated costs without borrowing."> I can cover the estimated costs without borrowing.</label>
+   <label class="choice"><input type="radio" name="decision" value="I would consider attending, but I need to find additional funding."> I would consider attending, but I need to find additional funding.</label>
+   <label class="choice"><input type="radio" name="decision" value="I would compare lower-cost universities before deciding."> I would compare lower-cost universities before deciding.</label>
+   <label class="choice"><input type="radio" name="decision" value="I would defer enrollment while saving or researching options."> I would defer enrollment while saving or researching options.</label>
+   <div class="field" style="margin-top:12px"><label for="reason">Explain your decision. What influenced your choice?</label><textarea id="reason" rows="4" placeholder="Describe what you learned about the university's costs, local living expenses, and your available resources."></textarea></div>
+   <div class="actions no-print">
+    <button class="primary" id="print">Print / save my report</button>
+   </div>
+  </div>
+ </section>
+ <section class="card">
+  <h2>Research and reflection checklist</h2>
+  <label class="choice"><input type="checkbox"> I used an official university source for tuition and fees.</label>
+  <label class="choice"><input type="checkbox"> I checked which living expenses were already included in the university estimate.</label>
+  <label class="choice"><input type="checkbox"> I researched housing and food costs in the university's region.</label>
+  <label class="choice"><input type="checkbox"> I separated grants and scholarships from loans.</label>
+  <label class="choice"><input type="checkbox"> I considered whether my work and family contribution estimates are realistic.</label>
+  <label class="choice"><input type="checkbox"> I can explain whether this university is financially realistic for me.</label>
+ </section>
+</main>
+<footer>College Affordability Challenge · Educational activity only · All calculations are estimates in USD.</footer>
+<script>
+(function(){
+ const ids=['school','location','coaSource','tuition','fees','books','rent','food','months','transport','personal','livingSource','grants','scholarships','family','savings','work','years'];
+ const $=id=>document.getElementById(id);
+ const num=id=>Math.max(0,Number($(id).value)||0);
+ const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n);
+ $('calculate').addEventListener('click',()=>{
+   const required=['school','location','tuition','fees','books','rent','food','transport','personal','grants','scholarships','family','savings','work'];
+   const missing=required.filter(id=>$(id).value.trim()==='');
+   if(missing.length){alert('Please complete the university, location, expense, and financial-resource fields before calculating. Enter 0 where an item does not apply.');$(missing[0]).focus();return;}
+   const m=num('months');
+   const items={tuition:num('tuition'),fees:num('fees'),books:num('books'),housing:num('rent')*m,food:num('food')*m,transport:num('transport'),personal:num('personal')};
+   const cost=Object.values(items).reduce((a,b)=>a+b,0);
+   const resources=['grants','scholarships','family','savings','work'].reduce((s,id)=>s+num(id),0);
+   const gap=Math.max(0,cost-resources);
+   const surplus=Math.max(0,resources-cost);
+   $('outCost').textContent=money(cost);$('outResources').textContent=money(resources);$('outGap').textContent=gap?money(gap):money(0);
+   $('outDegreeGap').textContent=money(gap*num('years'));
+   $('gapMetric').className='metric '+(gap?'gap':'good');
+   Object.keys(items).forEach(k=>$('r'+k[0].toUpperCase()+k.slice(1)).textContent=money(items[k]));
+   $('rTotal').textContent=money(cost);
+   if(!gap){$('outGap').textContent='No gap';$('outDegreeGap').textContent='No projected gap';}
+   $('results').classList.add('show');
+   $('results').scrollIntoView({behavior:'smooth',block:'start'});
+ });
+ $('reset').addEventListener('click',()=>{
+   if(!confirm('Clear all entries and start over?'))return;
+   ids.forEach(id=>$(id).value=(id==='months'?'9':id==='years'?'4':''));
+   document.querySelectorAll('input[name="decision"]').forEach(x=>x.checked=false);
+   document.querySelectorAll('input[type="checkbox"]').forEach(x=>x.checked=false);
+   $('reason').value='';$('results').classList.remove('show');
+ });
+ $('print').addEventListener('click',()=>window.print());
+})();
+</script>
+</body>
+</html>
